@@ -1,4 +1,6 @@
-package fr.elie.jeudelavie;
+package fr.elie.jeudelavie.cellule;
+
+import fr.elie.jeudelavie.Visiteur;
 
 public interface CelluleEtat {
 

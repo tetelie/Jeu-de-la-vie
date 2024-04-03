@@ -1,5 +1,7 @@
 package fr.elie.jeudelavie;
 
+import fr.elie.jeudelavie.cellule.Cellule;
+
 public class Visiteur {
 
     private JeuDeLaVie jeu;

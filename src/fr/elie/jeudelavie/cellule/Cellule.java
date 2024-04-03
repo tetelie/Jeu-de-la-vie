@@ -1,4 +1,7 @@
-package fr.elie.jeudelavie;
+package fr.elie.jeudelavie.cellule;
+
+import fr.elie.jeudelavie.JeuDeLaVie;
+import fr.elie.jeudelavie.Visiteur;
 
 public class Cellule {
 
