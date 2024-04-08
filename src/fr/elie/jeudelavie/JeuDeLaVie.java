@@ -20,6 +20,8 @@ public class JeuDeLaVie implements Observable {
     private int xMax;
     private int yMax;
 
+    private double densite = 0.5;
+
     private Visiteur visiteur;
 
     private List<Observateur> observateurs;
@@ -32,6 +34,8 @@ public class JeuDeLaVie implements Observable {
         observateurs = new ArrayList<>();
         commandes = new ArrayList<>();
         visiteur = new VisiteurClassique(this);
+        new VisiteurDayNight(this);
+        new VisiteurHighLife(this);
     }
 
     public void initialiseGrille()
@@ -42,7 +46,7 @@ public class JeuDeLaVie implements Observable {
             for(int y = 0; y < yMax; y++)
             {
                 double rand = Math.random();
-                if(rand >= ((double) 1/2))
+                if(rand < densite)
                 {
                     grille[x][y] = new Cellule(x, y, CelluleEtatVivant.getInstance());
                 }else{
@@ -110,87 +114,32 @@ public class JeuDeLaVie implements Observable {
         observateurs.forEach(Observateur::actualise);
     }
 
-    public static boolean p = true;
+    public static boolean p = false;
+
+    public void setVisiteur(Visiteur visiteur) {
+        this.visiteur = visiteur;
+    }
+
+    public void setxMax(int xMax) {
+        this.xMax = xMax;
+    }
+
+    public void setyMax(int yMax) {
+        this.yMax = yMax;
+    }
+
+    public void setDensite(double densite) {
+        this.densite = densite;
+    }
 
     public static void main(String[] args) throws InterruptedException {
-        JFrame frame = new JFrame();
-        frame.setSize(900,950);
-        frame.setLocationRelativeTo(null);
-        frame.setTitle("Jeu de la vie");
-        frame.setLayout(null);
         JeuDeLaVie jeu = new JeuDeLaVie(100,100);
         jeu.initialiseGrille();
         JeuDeLaVieUI jeuDeLaVieUI = new JeuDeLaVieUI(jeu);
         JeuDeLaVieConsole jeuDeLaVieConsole = new JeuDeLaVieConsole(jeu);
-        jeuDeLaVieUI.setBounds(0,20,frame.getWidth(),frame.getHeight());
+        JeuDeLaVieStarter jeuDeLaVieStarter = new JeuDeLaVieStarter(jeu, jeuDeLaVieUI);
         jeu.attacheObservateur(jeuDeLaVieUI);
         jeu.attacheObservateur(jeuDeLaVieConsole);
-
-        JLabel txt = new JLabel();
-
-
-        JSlider vitesse = new JSlider();
-        vitesse.setMinimum(1);
-        vitesse.setMaximum(15);
-        vitesse.setBounds((frame.getWidth()/4) * 2,0, frame.getWidth()/4, 20);
-        vitesse.setValue(1);
-        vitesse.addChangeListener(new ChangeListener() {
-            @Override
-            public void stateChanged(ChangeEvent e) {
-                txt.setText("vitesse: " + vitesse.getValue());
-            }
-        });
-
-
-        txt.setText("vitesse: " + vitesse.getValue());
-        txt.setBounds((frame.getWidth()/4) * 3,0, frame.getWidth()/4, 20);
-        txt.setHorizontalTextPosition(SwingConstants.CENTER);
-        JButton play = new JButton();
-
-        JButton next = new JButton();
-        next.setText("next");
-        next.setBounds(frame.getWidth()/4, 0, frame.getWidth()/4, 20);
-        next.setEnabled(false);
-        next.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                if(!p) jeu.calculerGenerationSuivante();
-            }
-        });
-
-        play.setText("pause");
-        play.setSize(frame.getWidth()/4, 20);
-        play.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                p = p ? false : true;
-                next.setEnabled(!p);
-                play.setText(p ? "pause" : "play");
-
-            }
-        });
-        frame.add(play);
-        frame.add(next);
-        frame.add(vitesse);
-        frame.add(txt);
-
-        frame.add(jeuDeLaVieUI);
-
-        frame.addMouseListener(new MouseAdapter() {
-            @Override
-            public void mousePressed(MouseEvent e) {
-                super.mousePressed(e);
-                jeu.calculerGenerationSuivante();
-            }
-        });
-
-
-        frame.setVisible(true);
-
-        while(true)
-        {
-            Thread.sleep(1000/vitesse.getValue());
-            if(p) jeu.calculerGenerationSuivante();
-        }
+        jeu.attacheObservateur(jeuDeLaVieStarter);
     }
 }

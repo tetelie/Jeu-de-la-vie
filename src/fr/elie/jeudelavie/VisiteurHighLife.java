@@ -2,17 +2,18 @@ package fr.elie.jeudelavie;
 
 import fr.elie.jeudelavie.cellule.Cellule;
 
-public class VisiteurClassique extends Visiteur{
+public class VisiteurHighLife extends Visiteur{
 
-    public VisiteurClassique(JeuDeLaVie jeu) {
-        super(jeu, "Classique");
+
+    public VisiteurHighLife(JeuDeLaVie jeu) {
+        super(jeu, "High Life");
     }
 
     @Override
     public void visiteCelluleVivante(Cellule cellule) {
         super.visiteCelluleVivante(cellule);
         int nbVoisins = cellule.nombreVoisinesVivantes(getJeu());
-        if(nbVoisins < 2 || nbVoisins > 3)
+        if(nbVoisins != 2 && nbVoisins != 3)
         {
             getJeu().ajouteCommande(new CommandeMeurt(cellule));
         }
@@ -22,7 +23,7 @@ public class VisiteurClassique extends Visiteur{
     public void visiteCelluleMorte(Cellule cellule) {
         super.visiteCelluleMorte(cellule);
         int nbVoisins = cellule.nombreVoisinesVivantes(getJeu());
-        if(nbVoisins == 3)
+        if(nbVoisins == 3 || nbVoisins == 6)
         {
             getJeu().ajouteCommande(new CommandeVit(cellule));
         }
