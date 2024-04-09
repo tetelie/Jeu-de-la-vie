@@ -1,5 +1,4 @@
 Automate cellulaire
 
-
-![alt text](https://tetelie.dev/github/jdlv.png)
+<img alt="alt text" src="https://tetelie.dev/github/jdlv.png" width="200"/>
 
