@@ -3,14 +3,13 @@ package fr.elie.jeudelavie;
 import fr.elie.jeudelavie.cellule.Cellule;
 import fr.elie.jeudelavie.cellule.CelluleEtatMorte;
 import fr.elie.jeudelavie.cellule.CelluleEtatVivant;
+import fr.elie.jeudelavie.commande.Commande;
+import fr.elie.jeudelavie.observateur.*;
+import fr.elie.jeudelavie.visiteur.Visiteur;
+import fr.elie.jeudelavie.visiteur.VisiteurClassique;
+import fr.elie.jeudelavie.visiteur.VisiteurDayNight;
+import fr.elie.jeudelavie.visiteur.VisiteurHighLife;
 
-import javax.swing.*;
-import javax.swing.event.ChangeEvent;
-import javax.swing.event.ChangeListener;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -20,9 +19,12 @@ public class JeuDeLaVie implements Observable {
     private int xMax;
     private int yMax;
 
+    private int generation = 0;
     private double densite = 0.5;
 
     private Visiteur visiteur;
+
+    private static JeuDeLaVieConsole jeuDeLaVieConsole;
 
     private List<Observateur> observateurs;
     private List<Commande> commandes;
@@ -40,6 +42,7 @@ public class JeuDeLaVie implements Observable {
 
     public void initialiseGrille()
     {
+        generation = 0;
         grille = new Cellule[xMax][yMax];
         for(int x = 0; x < xMax; x++)
         {
@@ -54,6 +57,8 @@ public class JeuDeLaVie implements Observable {
                 }
             }
         }
+        jeuDeLaVieConsole.actualise();
+
     }
 
     public Cellule getGrilleXY(int x, int y)
@@ -108,6 +113,7 @@ public class JeuDeLaVie implements Observable {
 
     public void calculerGenerationSuivante()
     {
+        generation++;
         commandes.clear();
         distribueVisiteur();
         executeCommandes();
@@ -132,11 +138,15 @@ public class JeuDeLaVie implements Observable {
         this.densite = densite;
     }
 
+    public int getGeneration() {
+        return generation;
+    }
+
     public static void main(String[] args) throws InterruptedException {
         JeuDeLaVie jeu = new JeuDeLaVie(100,100);
-        jeu.initialiseGrille();
+        jeuDeLaVieConsole = new JeuDeLaVieConsole(jeu);
+        //jeu.initialiseGrille();
         JeuDeLaVieUI jeuDeLaVieUI = new JeuDeLaVieUI(jeu);
-        JeuDeLaVieConsole jeuDeLaVieConsole = new JeuDeLaVieConsole(jeu);
         JeuDeLaVieStarter jeuDeLaVieStarter = new JeuDeLaVieStarter(jeu, jeuDeLaVieUI);
         jeu.attacheObservateur(jeuDeLaVieUI);
         jeu.attacheObservateur(jeuDeLaVieConsole);

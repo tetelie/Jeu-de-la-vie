@@ -1,7 +1,8 @@
-package fr.elie.jeudelavie;
+package fr.elie.jeudelavie.observateur;
+
+import fr.elie.jeudelavie.JeuDeLaVie;
 
 import javax.swing.*;
-import javax.swing.border.Border;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
 import java.awt.*;
@@ -10,7 +11,7 @@ import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-public class JeuDeLaVieStarter implements Observateur{
+public class JeuDeLaVieStarter implements Observateur {
 
     private JeuDeLaVie jeu;
 
@@ -82,6 +83,7 @@ public class JeuDeLaVieStarter implements Observateur{
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
+                jeuDeLaVieUI.getFrame().setLocationRelativeTo(frame);
                 jeuDeLaVieUI.setVisible(true);
             }
         });

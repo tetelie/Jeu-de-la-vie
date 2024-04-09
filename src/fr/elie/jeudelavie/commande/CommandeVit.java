@@ -1,8 +1,9 @@
-package fr.elie.jeudelavie;
+package fr.elie.jeudelavie.commande;
 
 import fr.elie.jeudelavie.cellule.Cellule;
+import fr.elie.jeudelavie.commande.Commande;
 
-public class CommandeVit extends Commande{
+public class CommandeVit extends Commande {
 
     private final Cellule cellule;
 

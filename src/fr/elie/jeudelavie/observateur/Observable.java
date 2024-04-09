@@ -1,4 +1,4 @@
-package fr.elie.jeudelavie;
+package fr.elie.jeudelavie.observateur;
 
 public interface Observable {
 

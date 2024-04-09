@@ -1,8 +1,12 @@
-package fr.elie.jeudelavie;
+package fr.elie.jeudelavie.visiteur;
 
+import fr.elie.jeudelavie.JeuDeLaVie;
 import fr.elie.jeudelavie.cellule.Cellule;
+import fr.elie.jeudelavie.commande.CommandeMeurt;
+import fr.elie.jeudelavie.commande.CommandeVit;
+import fr.elie.jeudelavie.visiteur.Visiteur;
 
-public class VisiteurClassique extends Visiteur{
+public class VisiteurClassique extends Visiteur {
 
     public VisiteurClassique(JeuDeLaVie jeu) {
         super(jeu, "Classique");

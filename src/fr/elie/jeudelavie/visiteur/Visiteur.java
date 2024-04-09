@@ -1,5 +1,6 @@
-package fr.elie.jeudelavie;
+package fr.elie.jeudelavie.visiteur;
 
+import fr.elie.jeudelavie.JeuDeLaVie;
 import fr.elie.jeudelavie.cellule.Cellule;
 
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ public class Visiteur {
         return jeu;
     }
 
-    protected String getName() {
+    public String getName() {
         return name;
     }
 

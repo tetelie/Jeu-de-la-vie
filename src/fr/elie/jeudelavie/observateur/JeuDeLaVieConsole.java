@@ -1,10 +1,11 @@
-package fr.elie.jeudelavie;
+package fr.elie.jeudelavie.observateur;
 
-public class JeuDeLaVieConsole implements Observateur{
+import fr.elie.jeudelavie.JeuDeLaVie;
+
+public class JeuDeLaVieConsole implements Observateur {
 
     private JeuDeLaVie jeu;
 
-    int generation = 1;
 
     public JeuDeLaVieConsole(JeuDeLaVie jeu)
     {
@@ -21,8 +22,7 @@ public class JeuDeLaVieConsole implements Observateur{
                     if(jeu.getGrilleXY(x,y).estVivante()) vivantes++;
                 }
             }
-            System.out.println("Generation: " + generation + " | Nombre de cellules vivantes: " + vivantes);
-            generation++;
+            System.out.println("Generation: " + jeu.getGeneration() + " | Nombre de cellules vivantes: " + vivantes);
     }
 
 }

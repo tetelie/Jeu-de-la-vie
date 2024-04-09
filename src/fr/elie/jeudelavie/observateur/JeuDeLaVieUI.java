@@ -1,4 +1,7 @@
-package fr.elie.jeudelavie;
+package fr.elie.jeudelavie.observateur;
+
+import fr.elie.jeudelavie.JeuDeLaVie;
+import fr.elie.jeudelavie.visiteur.Visiteur;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -100,7 +103,7 @@ public class JeuDeLaVieUI extends JComponent implements Observateur, Runnable {
         });
 
         next.setText("next");
-        next.setEnabled(false);
+        next.setEnabled(true);
         next.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
