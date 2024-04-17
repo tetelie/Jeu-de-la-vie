@@ -1,6 +1,11 @@
 package fr.elie.jeudelavie.observateur;
 
 import fr.elie.jeudelavie.JeuDeLaVie;
+import fr.elie.jeudelavie.cellule.Cellule;
+import fr.elie.jeudelavie.color.ColorMode;
+import fr.elie.jeudelavie.color.LifeColorMode;
+import fr.elie.jeudelavie.color.LifeReverseColorMode;
+import fr.elie.jeudelavie.color.NoColorMode;
 import fr.elie.jeudelavie.visiteur.Visiteur;
 
 import javax.swing.*;
@@ -28,13 +33,16 @@ public class JeuDeLaVieUI extends JComponent implements Observateur, Runnable {
     private JButton play = new JButton();
     private JButton next = new JButton();
 
+    private final int vitesse_max = 100;
+
     public static boolean p = false;
 
 
     public JeuDeLaVieUI(JeuDeLaVie jeuDeLaVie) throws InterruptedException {
         this.jeu = jeuDeLaVie;
-        
-        
+
+
+
         frame = new JFrame();
         frame.setSize(500,600);
         frame.setLayout(new BorderLayout());
@@ -45,6 +53,9 @@ public class JeuDeLaVieUI extends JComponent implements Observateur, Runnable {
         JLabel txt = new JLabel("", SwingConstants.CENTER);
         List<String> mode = new ArrayList<>();
         Visiteur.getVisiteurs().forEach(visiteur1 -> mode.add(visiteur1.getName()));
+        List<String> colormode = new ArrayList<>();
+        ColorMode.getColors().forEach(color -> colormode.add(color.getName()));
+
         JComboBox selectionMode = new JComboBox(mode.toArray());
 
         JButton reset = new JButton();
@@ -58,11 +69,13 @@ public class JeuDeLaVieUI extends JComponent implements Observateur, Runnable {
         JFormattedTextField w = new JFormattedTextField(formatter);
         JTextArea h = new JTextArea(jeu.getyMax()+"");
 
-
+        JLabel modeJeuLabel = new JLabel("Règle de jeu",  SwingConstants.CENTER);
+        JLabel modeCouleurLabel = new JLabel("Mode de couleur",  SwingConstants.CENTER);
+        JComboBox modeCouleur = new JComboBox(colormode.toArray());
 
 
         vitesse.setMinimum(1);
-        vitesse.setMaximum(30);
+        vitesse.setMaximum(vitesse_max);
         vitesse.setValue(1);
         vitesse.addChangeListener(new ChangeListener() {
             @Override
@@ -89,8 +102,20 @@ public class JeuDeLaVieUI extends JComponent implements Observateur, Runnable {
             }
         });
 
+        modeCouleur.addItemListener(new ItemListener() {
+            @Override
+            public void itemStateChanged(ItemEvent e) {
+                ColorMode colorMode = ColorMode.getColorModeFromName((String) modeCouleur.getSelectedItem());
+                if(colorMode != null)
+                {
+                    jeu.setColorMode(colorMode);
+                }
+                frame.repaint();
+            }
+        });
 
-        reset.setText("reset");
+
+        reset.setText("réinitialiser");
         reset.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -102,7 +127,7 @@ public class JeuDeLaVieUI extends JComponent implements Observateur, Runnable {
             }
         });
 
-        next.setText("next");
+        next.setText("suivant");
         next.setEnabled(true);
         next.addActionListener(new ActionListener() {
             @Override
@@ -111,7 +136,7 @@ public class JeuDeLaVieUI extends JComponent implements Observateur, Runnable {
             }
         });
 
-        play.setText("play");
+        play.setText("jouer");
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -123,14 +148,19 @@ public class JeuDeLaVieUI extends JComponent implements Observateur, Runnable {
 
         controlPanel.setSize(frame.getWidth(), controlPanelHeight);
         controlPanel.setLocation(0,0);
-        GridLayout grid = new GridLayout(2,3);
+        GridLayout grid = new GridLayout(3,3);
         controlPanel.setLayout(grid);
         controlPanel.add(play);
         controlPanel.add(next);
         controlPanel.add(reset);
-        controlPanel.add(vitesse);
         controlPanel.add(txt);
+        controlPanel.add(modeJeuLabel);
+        controlPanel.add(modeCouleurLabel);
+        controlPanel.add(vitesse);
         controlPanel.add(selectionMode);
+        controlPanel.add(modeCouleur);
+
+
         //controlPanel.add(w);
         //controlPanel.add(h);
 
@@ -171,10 +201,11 @@ public class JeuDeLaVieUI extends JComponent implements Observateur, Runnable {
         controlPanel.setSize(frame.getWidth(), controlPanelHeight);
         this.setSize(getParent().getWidth(), getParent().getHeight());
         int size = getParent().getWidth()/jeu.getxMax();
-        g.setColor(Color.DARK_GRAY);
         for (int x = 0; x < jeu.getxMax(); x++) {
             for (int y = 0; y < jeu.getyMax(); y++) {
                 if (jeu.getGrilleXY(x, y).estVivante()) {
+                    Cellule cellule = jeu.getGrilleXY(x,y);
+                    g.setColor(jeu.getColorMode().getCelluleColor(cellule));
                     g.fillOval(x * size, y * size, size, size);
                 }
             }
@@ -197,7 +228,7 @@ public class JeuDeLaVieUI extends JComponent implements Observateur, Runnable {
     private void change(boolean p)
     {
         next.setEnabled(!p);
-        play.setText(p ? "pause" : "play");
+        play.setText(p ? "pause" : "jouer");
     }
 
     public JFrame getFrame() {

@@ -3,12 +3,10 @@ package fr.elie.jeudelavie;
 import fr.elie.jeudelavie.cellule.Cellule;
 import fr.elie.jeudelavie.cellule.CelluleEtatMorte;
 import fr.elie.jeudelavie.cellule.CelluleEtatVivant;
+import fr.elie.jeudelavie.color.*;
 import fr.elie.jeudelavie.commande.Commande;
 import fr.elie.jeudelavie.observateur.*;
-import fr.elie.jeudelavie.visiteur.Visiteur;
-import fr.elie.jeudelavie.visiteur.VisiteurClassique;
-import fr.elie.jeudelavie.visiteur.VisiteurDayNight;
-import fr.elie.jeudelavie.visiteur.VisiteurHighLife;
+import fr.elie.jeudelavie.visiteur.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +16,8 @@ public class JeuDeLaVie implements Observable {
     private Cellule[][] grille;
     private int xMax;
     private int yMax;
+
+    private ColorMode colorMode;
 
     private int generation = 0;
     private double densite = 0.5;
@@ -29,6 +29,8 @@ public class JeuDeLaVie implements Observable {
     private List<Observateur> observateurs;
     private List<Commande> commandes;
 
+    private List<Cellule> config = new ArrayList<>();
+
     public JeuDeLaVie(int xMax, int yMax)
     {
         this.xMax = xMax;
@@ -38,22 +40,44 @@ public class JeuDeLaVie implements Observable {
         visiteur = new VisiteurClassique(this);
         new VisiteurDayNight(this);
         new VisiteurHighLife(this);
+        new VisiteurLabyrinthe(this);
+        new VisiteurExplosionChaos(this);
+        new VisiteurMotifRepliquant(this);
+
+        this.colorMode = new NoColorMode("Sans couleur", this);
+        new LifeColorMode("Age d'une cellule", this);
+        new LifeReverseColorMode("Age d'une cellule inversé", this);
+        new FutureColorMode("Future", this);
+        new RandomColorMode("Aléatoire", this);
+        new RandomFixColorMode("Aléatoire fixe", this);
+        new CyanColorMode("Cyan", this);
+        new VoisinnageColorMode("Voisinage", this);
     }
 
     public void initialiseGrille()
     {
         generation = 0;
         grille = new Cellule[xMax][yMax];
-        for(int x = 0; x < xMax; x++)
+        if(!config.isEmpty())
         {
-            for(int y = 0; y < yMax; y++)
+            for (int x = 0; x < xMax; x++) {
+                for (int y = 0; y < yMax; y++) {
+                    grille[x][y] = new Cellule(x,y,CelluleEtatMorte.getInstance());
+                }
+            }
+            for(Cellule cellule : config)
             {
-                double rand = Math.random();
-                if(rand < densite)
-                {
-                    grille[x][y] = new Cellule(x, y, CelluleEtatVivant.getInstance());
-                }else{
-                    grille[x][y] = new Cellule(x ,y, CelluleEtatMorte.getInstance());
+                grille[cellule.getX()][cellule.getY()] = new Cellule(cellule.getX(), cellule.getY(), CelluleEtatVivant.getInstance());
+            }
+        }else {
+            for (int x = 0; x < xMax; x++) {
+                for (int y = 0; y < yMax; y++) {
+                    double rand = Math.random();
+                    if (rand < densite) {
+                        grille[x][y] = new Cellule(x, y, CelluleEtatVivant.getInstance());
+                    } else {
+                        grille[x][y] = new Cellule(x, y, CelluleEtatMorte.getInstance());
+                    }
                 }
             }
         }
@@ -140,6 +164,22 @@ public class JeuDeLaVie implements Observable {
 
     public int getGeneration() {
         return generation;
+    }
+
+    public ColorMode getColorMode() {
+        return colorMode;
+    }
+
+    public void setColorMode(ColorMode colorMode) {
+        this.colorMode = colorMode;
+    }
+
+    public void setConfig(List<Cellule> config) {
+        this.config = config;
+    }
+
+    public Visiteur getVisiteur() {
+        return visiteur;
     }
 
     public static void main(String[] args) throws InterruptedException {

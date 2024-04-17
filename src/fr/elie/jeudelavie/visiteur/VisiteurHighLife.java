@@ -14,13 +14,15 @@ public class VisiteurHighLife extends Visiteur {
     }
 
     @Override
-    public void visiteCelluleVivante(Cellule cellule) {
+    public boolean visiteCelluleVivante(Cellule cellule) {
         super.visiteCelluleVivante(cellule);
         int nbVoisins = cellule.nombreVoisinesVivantes(getJeu());
         if(nbVoisins != 2 && nbVoisins != 3)
         {
             getJeu().ajouteCommande(new CommandeMeurt(cellule));
+            return false;
         }
+        return true;
     }
 
     @Override

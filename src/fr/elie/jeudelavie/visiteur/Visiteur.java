@@ -24,12 +24,13 @@ public class Visiteur {
         visiteurs.add(this);
     }
 
-    public void visiteCelluleVivante(Cellule cellule) {
-
+    public boolean visiteCelluleVivante(Cellule cellule) {
+        cellule.addLife();
+        return false;
     }
 
     public void visiteCelluleMorte(Cellule cellule) {
-
+        cellule.setLife(0);
     }
 
     protected JeuDeLaVie getJeu() {

@@ -9,6 +9,8 @@ public class Cellule {
     private int x;
     private int y;
 
+    int life = 0;
+
 
     public Cellule(int x, int y, CelluleEtat etat)
     {
@@ -43,6 +45,27 @@ public class Cellule {
 
     public boolean estVivante() {
         return etat.estVivante();
+    }
+
+    public int getLife() {
+        return life;
+    }
+
+    public int addLife()
+    {
+        return this.life++;
+    }
+
+    public void setLife(int life) {
+        this.life = life;
+    }
+
+    public int getX() {
+        return x;
+    }
+
+    public int getY() {
+        return y;
     }
 
     public void accepte(Visiteur visiteur)

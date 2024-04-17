@@ -1,6 +1,8 @@
 package fr.elie.jeudelavie.observateur;
 
 import fr.elie.jeudelavie.JeuDeLaVie;
+import fr.elie.jeudelavie.cellule.Cellule;
+import fr.elie.jeudelavie.cellule.CelluleEtatVivant;
 
 import javax.swing.*;
 import javax.swing.event.ChangeEvent;
@@ -10,27 +12,38 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.util.ArrayList;
+import java.util.List;
 
 public class JeuDeLaVieStarter implements Observateur {
 
     private JeuDeLaVie jeu;
 
+    private  JTextArea config;
+
     public JeuDeLaVieStarter(JeuDeLaVie jeu, JeuDeLaVieUI jeuDeLaVieUI)
     {
         this.jeu = jeu;
         JFrame frame = new JFrame();
-        frame.setSize(300,300);
+        frame.setSize(800,400);
         frame.setLocationRelativeTo(null);
-        frame.setLayout(new GridLayout(4,2));
+        frame.setLayout(new GridLayout(5,2));
         JSlider densite = new JSlider();
-        JLabel densiteTxt = new JLabel("", SwingConstants.CENTER);
+        JLabel densiteTxt = new JLabel();
         JLabel longueurTxt = new JLabel("Longueur");
         JLabel hauteurTxt = new JLabel("Hauteur");
         JTextField longeur = new JTextField(jeu.getxMax());
         JTextField hauteur = new JTextField(jeu.getyMax());
+        JCheckBox custom = new JCheckBox("Utilisé une configuration");
+        config = new JTextArea("5:5;6:6;7:4;7:5;7:6; # PLANEUR # \n 48:50;49:50;50:50;51:50;52:50; # Pour faire de beaux motifs #");
 
-        JButton play = new JButton("Play");
-        JButton quit = new JButton("Quit");
+
+        JScrollPane scroll = new JScrollPane (config,
+                JScrollPane.VERTICAL_SCROLLBAR_ALWAYS, JScrollPane.HORIZONTAL_SCROLLBAR_ALWAYS);
+
+
+        JButton play = new JButton("Démarrer");
+        JButton quit = new JButton("Quitter");
 
         longeur.setText(jeu.getxMax()+"");
         hauteur.setText(jeu.getyMax()+"");
@@ -54,8 +67,11 @@ public class JeuDeLaVieStarter implements Observateur {
         frame.add(longeur);
         frame.add(hauteurTxt);
         frame.add(hauteur);
-        frame.add(densite);
         frame.add(densiteTxt);
+        frame.add(densite);
+        frame.add(custom);
+        frame.add(config);
+
         frame.add(play);
         frame.add(quit);
         play.addMouseListener(new MouseAdapter() {
@@ -67,6 +83,10 @@ public class JeuDeLaVieStarter implements Observateur {
                 jeu.setxMax(Integer.parseInt(longeur.getText()));
                 jeu.setyMax(Integer.parseInt(hauteur.getText()));
                 System.out.println(d);
+                if(custom.isSelected())
+                {
+                    jeu.setConfig(getCellulesFromConfig());
+                }
                 jeu.initialiseGrille();
                 jeuDeLaVieUI.getFrame().setVisible(true);
             }
@@ -89,6 +109,24 @@ public class JeuDeLaVieStarter implements Observateur {
         });
 
         frame.setVisible(true);
+
+    }
+
+    public List<Cellule> getCellulesFromConfig()
+    {
+        List<Cellule> cellules = new ArrayList<>();
+        String content = config.getText();
+
+
+
+        String[] coo = content.replaceAll("\n", "").replaceAll(" ", "").replaceAll("#[^#]*#", "").split(";");
+
+        for(String s : coo)
+        {
+            String[] co = s.split(":");
+            cellules.add(new Cellule(Integer.parseInt(co[0]), Integer.parseInt(co[1]), CelluleEtatVivant.getInstance()));
+        }
+        return cellules;
 
     }
 
