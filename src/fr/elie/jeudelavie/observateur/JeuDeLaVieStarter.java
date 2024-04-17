@@ -77,7 +77,7 @@ public class JeuDeLaVieStarter implements Observateur {
         play.addMouseListener(new MouseAdapter() {
             @Override
             public void mousePressed(MouseEvent e) {
-                frame.setVisible(false);
+                //frame.setVisible(false);
                 double d = (double) densite.getValue() /100;
                 jeu.setDensite(d);
                 jeu.setxMax(Integer.parseInt(longeur.getText()));
@@ -86,8 +86,12 @@ public class JeuDeLaVieStarter implements Observateur {
                 if(custom.isSelected())
                 {
                     jeu.setConfig(getCellulesFromConfig());
+                }else{
+                    jeu.setConfig(new ArrayList<>());
                 }
                 jeu.initialiseGrille();
+                jeuDeLaVieUI.getFrame().repaint();
+
                 jeuDeLaVieUI.getFrame().setVisible(true);
             }
         });
@@ -103,7 +107,7 @@ public class JeuDeLaVieStarter implements Observateur {
         play.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                jeuDeLaVieUI.getFrame().setLocationRelativeTo(frame);
+                //jeuDeLaVieUI.getFrame().setLocationRelativeTo(frame);
                 jeuDeLaVieUI.setVisible(true);
             }
         });

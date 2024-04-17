@@ -46,7 +46,7 @@ public class JeuDeLaVieUI extends JComponent implements Observateur, Runnable {
         frame = new JFrame();
         frame.setSize(500,600);
         frame.setLayout(new BorderLayout());
-        frame.setLocationRelativeTo(null);
+        //frame.setLocationRelativeTo(null);
         frame.setTitle("Jeu de la vie");
         
         

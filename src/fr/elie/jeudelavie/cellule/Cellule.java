@@ -11,7 +11,6 @@ public class Cellule {
 
     int life = 0;
 
-
     public Cellule(int x, int y, CelluleEtat etat)
     {
         this.x = x;
