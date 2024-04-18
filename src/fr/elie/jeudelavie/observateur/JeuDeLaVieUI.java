@@ -90,12 +90,13 @@ public class JeuDeLaVieUI extends JComponent implements Observateur, Runnable {
             @Override
             public void itemStateChanged(ItemEvent e) {
                 if(e.getStateChange() == ItemEvent.SELECTED) {
+                    p = false;
+                    change(p);
                     System.out.println(selectionMode.getSelectedItem());
                     Visiteur visiteur = Visiteur.getVisiteurFromName((String) selectionMode.getSelectedItem());
                     jeu.setVisiteur(visiteur);
                     //jeu.initialiseGrille();
-                    p = false;
-                    change(p);
+
                     frame.repaint();
                     actualise();
                 }

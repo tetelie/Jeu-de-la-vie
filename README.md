@@ -21,3 +21,22 @@ Voici le lien du manuel utilisateur : [Manuel utilisateur](https://tetelie.dev/g
 - Différents modes de couleur (8 disponibles)
 - Affichage en console du nombre de cellules vivantes et le numéro de la génération
 
+## Règles de jeu
+
+- Classique
+- Day & Night
+- High Life
+- Labyrinthe
+- Explosion & Chaos
+- Motif Repliquant
+
+## Modes de couleur
+
+- Sans couleur
+- Age d'une cellule
+- Age d'une cellule inversé
+- Future
+- Aléatoire
+- Aléatoire fixe
+- Cyan
+- Voisinage
