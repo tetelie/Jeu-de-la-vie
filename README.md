@@ -1,5 +1,12 @@
 # Automate cellulaire
 
+## Aperçu
+
+<img alt="alt text" src="https://tetelie.dev/github/jv.png" width="400"/>
+
+## Manuel utilisateur
+Voici le lien du manuel utilisateur : [Manuel utilisateur](https://tetelie.dev/github/Manuel%20utilisateur.pdf)
+
 ## Fonctionnalitées
 
 - Choix des dimensions de la grille
@@ -13,9 +20,4 @@
 - Possibilité de changer de règles de jeu (6 disponibles)
 - Différents modes de couleur (8 disponibles)
 - Affichage en console du nombre de cellules vivantes et le numéro de la génération
-
-
-## Aperçu
-
-<img alt="alt text" src="https://tetelie.dev/github/jv.png" width="400"/>
 
