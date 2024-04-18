@@ -27,6 +27,7 @@ public class JeuDeLaVieStarter implements Observateur {
         JFrame frame = new JFrame();
         frame.setSize(800,400);
         frame.setLocationRelativeTo(null);
+        frame.setTitle("Démareur");
         frame.setLayout(new GridLayout(5,2));
         JSlider densite = new JSlider();
         JLabel densiteTxt = new JLabel();
